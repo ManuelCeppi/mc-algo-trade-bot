@@ -9,4 +9,4 @@ functions:
     handler: src/handler.run
     events:
       # Invoke Lambda function evert 10 minutes from 10:00 to 14:50 on weekdays
-      - schedule: cron(0/10 10-15 ? * MON-FRI *)
+      - schedule: cron(0/10 15-21 ? * MON-FRI *)
