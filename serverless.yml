@@ -1,0 +1,12 @@
+service: algo-trade-lambda
+provider:
+  name: aws
+  region: eu-central-1
+  runtime: python3.9
+
+functions:
+  cronHandler:
+    handler: main.py
+    events:
+      # Invoke Lambda function evert 10 minutes from 10:00 to 14:50 on weekdays
+      - schedule: cron(0/10 10-15 ? * MON-FRI *)
