@@ -9,3 +9,4 @@ def run(event, context):
     current_time = datetime.datetime.now().time()
     name = context.function_name
     logger.info("Your cron function " + name + " ran at " + str(current_time))
+    logger.info("lambda function is running")
