@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  algo-lambda:
+    entrypoint: "/algo-lambda.sh"
+    build: "./build/python"
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    volumes:
+      - './src:/app/src'
+      - './build/entrypoints/algo-lambda.sh:/algo-lambda.sh'
