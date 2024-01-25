@@ -2,7 +2,7 @@ service: algo-trade-lambda
 provider:
   name: aws
   region: eu-central-1
-  runtime: python3.12
+  runtime: python3.11
 
 functions:
   cronHandler:
