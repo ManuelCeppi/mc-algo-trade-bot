@@ -9,5 +9,5 @@ services:
     expose:
       - "8000"
     volumes:
-      - './src:/app/src'
-      - './build/entrypoints/algo-lambda.sh:/algo-lambda.sh'
+      - './:/app/src:delegated'
+      - './build/entrypoints/algo-lambda.sh:/algo-lambda.sh:delegated'
