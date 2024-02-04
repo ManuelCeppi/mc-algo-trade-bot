@@ -13,3 +13,12 @@ def check_stop_loss_and_take_profit(position):
         # Close position
         to_close = True
     return to_close
+
+def check_if_stock_is_bearish_candle(stock_price_candle_data):
+    pass
+
+def check_if_stock_is_bullish_candle(stock_price_candle_data):
+    pass
+
+def check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data):
+    pass

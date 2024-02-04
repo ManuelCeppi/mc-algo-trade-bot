@@ -3,6 +3,7 @@ import core.trade.trade as trading
 import core.market.market_data as market_data
 import core.user.user as user
 import core.market.market_utility as market_utility
+from alpaca.trading.enums import OrderSide
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -43,7 +44,21 @@ def algo_trade_start_function(event, context):
 
 def algo_trade_long_strategy_function(stock, trading_client, data_client):
     position_has_been_opened = False
-    #TODO implement open long position strategy
+    # Applying rsi strategy + price candle + volume for long positions
+    stock_rsi_data = data_client.get_stock_rsi_data(stock)
+    is_neutral_from_oversold = market_utility.check_if_stock_is_neutral_from_oversold(stock_rsi_data)
+    # First condition - RSI
+    if(is_neutral_from_oversold):
+        # Second condition - Price candle
+        stock_price_candle_data = data_client.get_stock_price_candle_data(stock)
+        is_bullish_candle = market_utility.check_if_stock_is_bullish_candle(stock_price_candle_data)
+        if(is_bullish_candle):
+            # Third condition - Volume
+            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data)
+            if(higher_volumes):
+                # Open long position
+                trading_client.open_trade(stock, OrderSide.BUY.value, 1)
+                position_has_been_opened = True
     return position_has_been_opened
 
 def algo_trade_short_strategy_function(stock, trading_client, data_client):
@@ -55,6 +70,15 @@ def algo_trade_short_strategy_function(stock, trading_client, data_client):
     if(is_neutral_from_overbought):
         # Second condition - Price candle
         stock_price_candle_data = data_client.get_stock_price_candle_data(stock)
+        is_bearish_candle = market_utility.check_if_stock_is_bearish_candle(stock_price_candle_data)
+        if(is_bearish_candle):
+            # Third condition - Volume
+            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data)
+            if(higher_volumes):
+                # Open short position
+                trading_client.open_trade(stock, OrderSide.SELL.value, 1)
+                position_has_been_opened = True
+    return position_has_been_opened
 
 # To test locally, uncomment the following line
 algo_trade_start_function("event", type('',(object,),{"function_name":"test"})()) 
