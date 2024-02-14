@@ -40,8 +40,6 @@ def algo_trade_start_function(event, context):
     # Otherwise, the buying flow will start
     logger.info("Algo trade bot - End function")
 
-
-
 def algo_trade_long_strategy_function(stock, trading_client, data_client):
     position_has_been_opened = False
     # Applying rsi strategy + price candle + volume for long positions
