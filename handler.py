@@ -10,8 +10,8 @@ logger.setLevel(logging.INFO)
 
 def algo_trade_start_function(event, context):
     # Create clients
-    data_client = market_data.MarketData()
-    trading_client = trading.Trade()
+    data_client = market_data.MarketDataClient()
+    trading_client = trading.TradeClient()
     user_client = user.User()
     logger.info("Algo trade bot - Start function")
     # Get open positions from alpaca user
