@@ -6,12 +6,6 @@ import core.user.user as user
 import core.market.market_utility as market_utility
 from alpaca.trading.enums import OrderSide
 
-# Testing purposes
-os.environ['ALPACA_ACCOUNT_ID'] = "983dbd4d-f7d4-4dbf-aef1-52c3744e6f0f"
-os.environ['ALPACA_SECRET_KEY'] = "dMAoW0QTZUcDA0flvZiRD0KImJax2YC4oXNFHwC2"
-os.environ['ALPHA_VANTAGE_API_KEY'] = "ME0N6KYJQ2F7MSU3"
-os.environ['ALPACA_API_KEY'] = "PKKEM8SXISP5DXV3FYJN"
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __data_client = market_data.MarketDataClient()
@@ -96,6 +90,4 @@ def algo_trade_short_strategy_function(stock):
                 __trading_client.open_trade(stock.symbol, 1, OrderSide.BUY.value)
                 position_has_been_opened = True
     return position_has_been_opened
-
-algo_trade_start_function("event", type('',(object,),{"function_name":"test"})()) 
 
