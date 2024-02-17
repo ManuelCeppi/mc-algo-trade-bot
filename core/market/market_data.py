@@ -22,7 +22,7 @@ class MarketDataClient:
         return self.__alpha_vantage_client.get_stock_data(symbol, 'RSI', interval, time_period, series_type)
 
     def get_stock_price_candle_data(self, symbol, interval='60min'):
-        return self.__alpha_vantage_client.get_stock_data(symbol, 'TIME_SERIES_INTRADAY', interval)
+        return self.__alpha_vantage_client.get_stock_data(symbol, 'TIME_SERIES_INTRADAY', interval, None, None)
 
     def get_stocks_with_higher_volumes(self):
-        return self.__alpaca_screener_client.get_most_actives(MostActivesRequest()).most_actives
+        return self.__alpaca_screener_client.get_most_actives(MostActivesRequest(top=15)).most_actives

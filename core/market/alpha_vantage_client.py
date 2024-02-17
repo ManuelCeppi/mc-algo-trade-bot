@@ -8,7 +8,6 @@ class AlphaVantageClient:
     def get_stock_data(self, symbol, function, interval, time_period, series_type):
         # Get stock data from Alpha Vantage API
         url = self.build_url(function = function, symbol = symbol, interval = interval, time_period = time_period, series_type = series_type)
-        url = 'https://www.alphavantage.co/query?function={function}&symbol={symbol}&interval={interval}&time_period={time_period}&series_type={series_type}&apikey={self.__alpha_vantage_api_key}'
         r = requests.get(url)
         data = r.json()
         return data

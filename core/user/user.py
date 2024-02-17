@@ -1,14 +1,13 @@
 import os
-from alpaca.broker import BrokerClient
+from alpaca.trading.client import TradingClient
 
 class User:
     def __init__(self):
-        self.__account_id = os.environ.get('ALPACA_ACCOUNT_ID')
-        self.__broker_client = BrokerClient(
+        self.__trading_client = TradingClient(
             os.environ.get('ALPACA_API_KEY'),
             os.environ.get('ALPACA_SECRET_KEY')
         )
 
     # Get open positions from alpaca API
     def get_open_positions(self):
-        return self.__broker_client.get_all_positions_for_account(account_id=self.__account_id)
+        return self.__trading_client.get_all_positions()
