@@ -22,7 +22,7 @@ class TradeClient:
         self.__trading_client.submit_order(order)
 
     def close_trade(self, position):
-        self.__trading_client.close_position(position.symbol, qty=position.qty)
+        self.__trading_client.close_position(position.symbol)
 
     def get_asset(self, symbol):
         return self.__trading_client.get_asset(symbol)
