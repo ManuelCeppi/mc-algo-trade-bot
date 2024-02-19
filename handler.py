@@ -91,7 +91,3 @@ def algo_trade_short_strategy_function(stock):
                 __trading_client.open_trade(stock.symbol, 1, OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
-
-
-# invoke the function for test
-algo_trade_start_function(None, None)
