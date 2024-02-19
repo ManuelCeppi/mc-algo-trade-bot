@@ -8,6 +8,7 @@ from alpaca.trading.enums import OrderSide
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
 __data_client = market_data.MarketDataClient()
 __trading_client = trading.TradeClient()
 __user_client = user.User()
@@ -91,3 +92,6 @@ def algo_trade_short_strategy_function(stock):
                 position_has_been_opened = True
     return position_has_been_opened
 
+
+# invoke the function for test
+algo_trade_start_function(None, None)
