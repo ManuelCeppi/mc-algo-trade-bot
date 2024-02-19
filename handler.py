@@ -8,9 +8,6 @@ from alpaca.trading.enums import OrderSide
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-os.environ['ALPACA_API_KEY'] = 'PKKEM8SXISP5DXV3FYJN'
-os.environ['ALPACA_SECRET_KEY'] = 'dMAoW0QTZUcDA0flvZiRD0KImJax2YC4oXNFHwC2'
-os.environ['ALPHA_VANTAGE_API_KEY'] = 'ME0N6KYJQ2F7MSU3'
 
 __data_client = market_data.MarketDataClient()
 __trading_client = trading.TradeClient()
