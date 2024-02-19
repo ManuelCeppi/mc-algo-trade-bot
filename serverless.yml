@@ -11,8 +11,8 @@ functions:
       # Invoke Lambda function evert 10 minutes from 10:00 to 14:50 on weekdays
       - schedule: cron(0/10 15-21 ? * MON-FRI *)
     environment:
-      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
-      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
-      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      ALPACA_API_KEY: ${env:ALPACA_API_KEY}
+      ALPACA_SECRET_KEY: ${env:ALPACA_SECRET_KEY}
+      ALPHA_VANTAGE_API_KEY: ${env:ALPHA_VANTAGE_API_KEY}
 plugins:
   - serverless-python-requirements
