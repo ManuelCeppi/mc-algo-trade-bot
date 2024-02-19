@@ -88,7 +88,7 @@ def algo_trade_short_strategy_function(stock):
             higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data)
             if(higher_volumes):
                 # Open short position
-                __trading_client.open_trade(stock.symbol, 1, OrderSide.BUY.value)
+                __trading_client.open_trade(stock.symbol, 1, OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
 
