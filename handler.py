@@ -1,3 +1,4 @@
+import operator
 import os
 import logging
 import core.trade.trade as trading
@@ -25,9 +26,7 @@ def algo_trade_start_function(event, context):
             if(to_close):
                 logger.info(f"Algo trade bot - Closing position {position.symbol}")
                 __trading_client.close_trade(position)
-        return # TODO For now not opening new positions if there are open positions
     
-    logger.info("Algo trade bot - No open positions")
     # Get stocks with higher volumes
     higher_volumes_stocks = __data_client.get_stocks_with_higher_volumes()
     logger.info(f"Algo trade bot - Found {higher_volumes_stocks} stocks with higher volumes")
@@ -37,6 +36,14 @@ def algo_trade_start_function(event, context):
         asset = __trading_client.get_asset(stock.symbol)
         if(asset.tradable == False):
             logger.info(f"Algo trade bot - Stock {stock.symbol} is not tradable")
+            continue
+        found = False
+        for p in open_positions:
+            if(operator.eq(p.symbol, stock.symbol)):
+                logger.info(f"Algo trade bot - Stock {stock.symbol} is already in open positions")
+                found = True
+                break
+        if(found):
             continue
         # Apply buying strategy
         position_has_been_opened = algo_trade_long_strategy_function(stock)
