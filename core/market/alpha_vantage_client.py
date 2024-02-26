@@ -17,6 +17,7 @@ class AlphaVantageClient:
         for key, value in kwargs.items():
             if(value):
                 url += f'{key}={value}&'
+        url += 'entitlement=delayed&'
         url += f'apikey={self.__alpha_vantage_api_key}'
         return url
 
