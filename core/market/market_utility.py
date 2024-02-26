@@ -54,7 +54,7 @@ def check_stop_loss_and_take_profit(position):
         to_close = True
     return to_close
 
-def check_if_stock_is_bearish_candle(stock_price_candle_data):
+def check_if_stock_is_bearish_candle(actual, stock_price_candle_data):
     # Check if the actual candle minimum is lower than the previous hour candle minimum
     is_bearish = False
     
@@ -62,37 +62,34 @@ def check_if_stock_is_bearish_candle(stock_price_candle_data):
     df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
     df['3. low'] = pd.to_numeric(df['3. low'])
 
-    actual_price_candle = df.iloc[0]
     previous_price_candle = df.iloc[1]
 
-    if(actual_price_candle['3. low'] < previous_price_candle['3. low']):
+    if(pd.to_numeric(actual) < previous_price_candle['3. low']):
         is_bearish = True
     return is_bearish
 
-def check_if_stock_is_bullish_candle(stock_price_candle_data):
+def check_if_stock_is_bullish_candle(actual, stock_price_candle_data):
     # Check if the actual candle maximum is higher than the previous hour candle maximum
     is_bullish = False
 
     df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
     df['2. high'] = pd.to_numeric(df['2. high'])
     
-    actual_price_candle = df.iloc[0]
     previous_price_candle = df.iloc[1]
     
-    if(actual_price_candle['2. high'] > previous_price_candle['2. high']):
+    if(pd.to_numeric(actual) > previous_price_candle['2. high']):
         is_bullish = True
     return is_bullish
 
-def check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data):
+def check_if_stock_volume_is_higher_than_previous_candle(actual, stock_price_candle_data):
     # Check if the actual candle volume is higher than the previous hour candle volume
     is_higher = False
 
     df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
     df['5. volume'] = pd.to_numeric(df['5. volume'])
 
-    actual_price_candle = df.iloc[0]
-    previous_price_candle = df.iloc[1]
-
-    if(actual_price_candle['5. volume'] > previous_price_candle['5. volume']):
+    previous_hour_price_candle = df.iloc[0]
+    
+    if(pd.to_numeric(actual) > previous_hour_price_candle['5. volume']):
         is_higher = True
     return is_higher
