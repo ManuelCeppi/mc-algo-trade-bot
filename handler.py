@@ -105,7 +105,7 @@ def algo_trade_short_strategy_function(stock):
         # Second condition - Price candle
         global_quote = __data_client.get_stock_global_quote(stock.symbol)
         stock_price_candle_data = __data_client.get_stock_price_candle_data(stock.symbol)
-        is_bearish_candle = market_utility.check_if_stock_is_bearish_candle(global_quote['04. low'] ,stock_price_candle_data)
+        is_bearish_candle = market_utility.check_if_stock_is_bearish_candle(global_quote['04. low'],stock_price_candle_data)
         logger.info(f"Algo trade bot - Stock {stock.symbol} is bearish candle: {is_bearish_candle}")
         if(is_bearish_candle):
             # Third condition - Volume
