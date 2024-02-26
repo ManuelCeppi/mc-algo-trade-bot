@@ -79,12 +79,14 @@ def algo_trade_long_strategy_function(stock):
     # First condition - RSI
     if(is_neutral_from_oversold):
         # Second condition - Price candle
+        global_quote = __data_client.get_stock_global_quote(stock.symbol)
         stock_price_candle_data = __data_client.get_stock_price_candle_data(stock.symbol)
-        is_bullish_candle = market_utility.check_if_stock_is_bullish_candle(stock_price_candle_data)
+        is_bullish_candle = market_utility.check_if_stock_is_bullish_candle(global_quote['03. high'], stock_price_candle_data)
         logger.info(f"Algo trade bot - Stock {stock.symbol} is bullish candle: {is_bullish_candle}")
         if(is_bullish_candle):
             # Third condition - Volume
-            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data)
+            # Retrieving actual volume
+            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(global_quote['06. volume'], stock_price_candle_data)
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open long position
@@ -101,12 +103,13 @@ def algo_trade_short_strategy_function(stock):
     # First condition - RSI
     if(is_neutral_from_overbought):
         # Second condition - Price candle
+        global_quote = __data_client.get_stock_global_quote(stock.symbol)
         stock_price_candle_data = __data_client.get_stock_price_candle_data(stock.symbol)
-        is_bearish_candle = market_utility.check_if_stock_is_bearish_candle(stock_price_candle_data)
+        is_bearish_candle = market_utility.check_if_stock_is_bearish_candle(global_quote['04. low'] ,stock_price_candle_data)
         logger.info(f"Algo trade bot - Stock {stock.symbol} is bearish candle: {is_bearish_candle}")
         if(is_bearish_candle):
             # Third condition - Volume
-            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data)
+            higher_volumes = market_utility.check_if_stock_volume_is_higher_than_previous_candle(global_quote['06. volume'], stock_price_candle_data)
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position

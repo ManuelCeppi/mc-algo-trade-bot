@@ -26,3 +26,6 @@ class MarketDataClient:
 
     def get_stocks_with_higher_volumes(self):
         return self.__alpaca_screener_client.get_most_actives(MostActivesRequest(top=15)).most_actives
+
+    def get_stock_global_quote(self, symbol):
+        return self.__alpha_vantage_client.get_stock_data(symbol, 'GLOBAL_QUOTE', '1min', None, None)
