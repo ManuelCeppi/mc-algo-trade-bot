@@ -97,7 +97,7 @@ def algo_trade_long_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open long position
-                __trading_client.open_trade(stock.symbol, 1, OrderSide.BUY.value)
+                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get['MULTIPLIER']), OrderSide.BUY.value)
                 position_has_been_opened = True
     return position_has_been_opened
 
@@ -120,8 +120,6 @@ def algo_trade_short_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position
-                __trading_client.open_trade(stock.symbol, 1, OrderSide.SELL.value)
+                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get['MULTIPLIER']), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
-
-# test
