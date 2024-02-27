@@ -30,7 +30,7 @@ def algo_trade_start_function(event, context):
             logger.info("Algo trade bot - Closing all open positions")
             for position in open_positions:
                 __trading_client.close_trade(position)
-                __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+                # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
         return
     # Looping positions and check if they are closable (stop loss or take profit)
     if(open_positions):
@@ -40,7 +40,7 @@ def algo_trade_start_function(event, context):
             if(to_close):
                 logger.info(f"Algo trade bot - Closing position {position.symbol}")
                 __trading_client.close_trade(position)
-                __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+                # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
     
     # Get stocks with higher volumes
     higher_volumes_stocks = __data_client.get_stocks_with_higher_volumes()
@@ -64,7 +64,7 @@ def algo_trade_start_function(event, context):
         position_has_been_opened = algo_trade_long_strategy_function(stock)
         if(position_has_been_opened):
             logger.info(f"Algo trade bot - Opened long position for {stock.symbol}")
-            __aws_client.send_message(f"Algo trade bot - Opened long position for {stock.symbol}")
+            # __aws_client.send_message(f"Algo trade bot - Opened long position for {stock.symbol}")
             continue
         else:
             # Get asset to check if its shortable
@@ -72,7 +72,7 @@ def algo_trade_start_function(event, context):
                 position_has_been_opened = algo_trade_short_strategy_function(stock)
                 if(position_has_been_opened):
                     logger.info(f"Algo trade bot - Opened short position for {stock.symbol}")
-                    __aws_client.send_message(f"Algo trade bot - Opened short position for {stock.symbol}")
+                    # __aws_client.send_message(f"Algo trade bot - Opened short position for {stock.symbol}")
     # Check if there are open positions: if there are, the selling flow will start;
     # Otherwise, the buying flow will start
     logger.info("Algo trade bot - End function")
