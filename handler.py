@@ -76,9 +76,11 @@ def algo_trade_start_function(event, context):
                         # __aws_client.send_message(f"Algo trade bot - Opened short position for {stock.symbol}")
             # Check if there are open positions: if there are, the selling flow will start;
             # Otherwise, the buying flow will start
-            logger.info("Algo trade bot - End function")
         except Exception as e:
             logger.error(f"Algo trade bot - Error: {e}")
+    logger.info(f"Algo trade bot - End function")
+
+        
 
 def algo_trade_long_strategy_function(stock):
     position_has_been_opened = False
