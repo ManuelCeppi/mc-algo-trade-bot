@@ -48,34 +48,37 @@ def algo_trade_start_function(event, context):
     
     # Looping found stocks
     for stock in higher_volumes_stocks:
-        asset = __trading_client.get_asset(stock.symbol)
-        if(asset.tradable == False):
-            logger.info(f"Algo trade bot - Stock {stock.symbol} is not tradable")
-            continue
-        found = False
-        for p in open_positions:
-            if(operator.eq(p.symbol, stock.symbol)):
-                logger.info(f"Algo trade bot - Stock {stock.symbol} is already in open positions")
-                found = True
-                break
-        if(found):
-            continue
-        # Apply buying strategy
-        position_has_been_opened = algo_trade_long_strategy_function(stock)
-        if(position_has_been_opened):
-            logger.info(f"Algo trade bot - Opened long position for {stock.symbol}")
-            # __aws_client.send_message(f"Algo trade bot - Opened long position for {stock.symbol}")
-            continue
-        else:
-            # Get asset to check if its shortable
-            if(asset.shortable):
-                position_has_been_opened = algo_trade_short_strategy_function(stock)
-                if(position_has_been_opened):
-                    logger.info(f"Algo trade bot - Opened short position for {stock.symbol}")
-                    # __aws_client.send_message(f"Algo trade bot - Opened short position for {stock.symbol}")
-    # Check if there are open positions: if there are, the selling flow will start;
-    # Otherwise, the buying flow will start
-    logger.info("Algo trade bot - End function")
+        try:
+            asset = __trading_client.get_asset(stock.symbol)
+            if(asset.tradable == False):
+                logger.info(f"Algo trade bot - Stock {stock.symbol} is not tradable")
+                continue
+            found = False
+            for p in open_positions:
+                if(operator.eq(p.symbol, stock.symbol)):
+                    logger.info(f"Algo trade bot - Stock {stock.symbol} is already in open positions")
+                    found = True
+                    break
+            if(found):
+                continue
+            # Apply buying strategy
+            position_has_been_opened = algo_trade_long_strategy_function(stock)
+            if(position_has_been_opened):
+                logger.info(f"Algo trade bot - Opened long position for {stock.symbol}")
+                # __aws_client.send_message(f"Algo trade bot - Opened long position for {stock.symbol}")
+                continue
+            else:
+                # Get asset to check if its shortable
+                if(asset.shortable):
+                    position_has_been_opened = algo_trade_short_strategy_function(stock)
+                    if(position_has_been_opened):
+                        logger.info(f"Algo trade bot - Opened short position for {stock.symbol}")
+                        # __aws_client.send_message(f"Algo trade bot - Opened short position for {stock.symbol}")
+            # Check if there are open positions: if there are, the selling flow will start;
+            # Otherwise, the buying flow will start
+            logger.info("Algo trade bot - End function")
+        except Exception as e:
+            logger.error(f"Algo trade bot - Error: {e}")
 
 def algo_trade_long_strategy_function(stock):
     position_has_been_opened = False
@@ -97,7 +100,7 @@ def algo_trade_long_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open long position
-                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get['MULTIPLIER']), OrderSide.BUY.value)
+                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get('MULTIPLIER')), OrderSide.BUY.value)
                 position_has_been_opened = True
     return position_has_been_opened
 
@@ -120,6 +123,6 @@ def algo_trade_short_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position
-                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get['MULTIPLIER']), OrderSide.SELL.value)
+                __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get('MULTIPLIER')), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
