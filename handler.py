@@ -30,6 +30,7 @@ def algo_trade_start_function(event, context):
             logger.info("Algo trade bot - Closing all open positions")
             for position in open_positions:
                 __trading_client.close_trade(position)
+                logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
                 # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
         return
     # Looping positions and check if they are closable (stop loss or take profit)
@@ -40,6 +41,7 @@ def algo_trade_start_function(event, context):
             if(to_close):
                 logger.info(f"Algo trade bot - Closing position {position.symbol}")
                 __trading_client.close_trade(position)
+                logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
                 # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
     
     # Get stocks with higher volumes
