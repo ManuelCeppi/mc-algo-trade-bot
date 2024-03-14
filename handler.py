@@ -24,7 +24,7 @@ def algo_trade_start_function(event, context):
     open_positions = __user_client.get_open_positions()
     # Getting current time and checking if this is the last iteration of the day
     current_time = datetime.now(timezone.utc)
-    if(current_time.hour == 20 and current_time.minute >= 50 and current_time.second > 0):
+    if(current_time.hour == 19 and current_time.minute >= 50 and current_time.second > 0):
         logger.info("Algo trade bot - Last iteration of the day")
         if(open_positions):
             logger.info("Algo trade bot - Closing all open positions")
