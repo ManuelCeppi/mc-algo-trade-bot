@@ -11,7 +11,7 @@ functions:
     events:
       # Invoke Lambda function every 10 minutes from 15:00 to 20:50 (UTC) on weekdays
       # TODO Think about a different schedule based on legal hour change (maybe two rules?)
-      - schedule: cron(0/10 15-20 ? * MON-FRI *)
+      - schedule: cron(0/10 15-19 ? * MON-FRI *)
     environment:
       ALPACA_API_KEY: ${env:ALPACA_API_KEY}
       ALPACA_SECRET_KEY: ${env:ALPACA_SECRET_KEY}
