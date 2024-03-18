@@ -1,45 +1,43 @@
 import pandas as pd
 
-def check_if_stock_is_neutral_from_overbought(stock_data):
+def check_if_stock_is_neutral_from_overbought(rsi_data):
     isNeutralFromOverbought = False
     # Calcola l'RSI utilizzando i dati più recenti
 
-    rsi_data = stock_data['Technical Analysis: RSI']
     # Converte i dati in un DataFrame di pandas per facilitare l'analisi
     df = pd.DataFrame(rsi_data).T
-    df['RSI'] = pd.to_numeric(df['RSI'])
+    df['rsi'] = pd.to_numeric(df['rsi'])
 
     # Calcola la media mobile semplice (SMA) dell'RSI: periodo di 5
-    rsi_sma = df['RSI'].rolling(window=5).mean()
+    rsi_sma = df['rsi'].rolling(window=10).mean()
 
     # Controlla se l'RSI è sceso sotto il livello overbought (per esempio, 70) e se la SMA dell'RSI è inferiore a overbought_level
     overbought_level = 70
 
-    last_rsi = df.iloc[-1]['RSI']
+    last_rsi = df.iloc[-1]['rsi']
 
     if (last_rsi > overbought_level or last_rsi < overbought_level) and rsi_sma.iloc[-1] <= overbought_level:
         isNeutralFromOverbought = True
     
     return isNeutralFromOverbought
 
-def check_if_stock_is_neutral_from_oversold(stock_data):
+def check_if_stock_is_neutral_from_oversold(rsi_data):
     isNeutralFromOversold = False
     # Estrai i dati RSI dal risultato
-    rsi_data = stock_data['Technical Analysis: RSI']
 
     # Converte i dati in un DataFrame di pandas per facilitare l'analisi
     df = pd.DataFrame(rsi_data).T
-    df['RSI'] = pd.to_numeric(df['RSI'])
+    df['rsi'] = pd.to_numeric(df['rsi'])
 
     # Calcola la media mobile semplice (SMA) dell'RSI
-    rsi_sma = df['RSI'].rolling(window=5).mean()
+    rsi_sma = df['rsi'].rolling(window=10).mean()
 
     # Controlla se l'RSI è sceso al di sotto del livello di ipervenduto (per esempio, 30) e se la SMA dell'RSI è superiore al livello di ipervenduto
     oversold_level = 30
 
-    last_rsi = df.iloc[0]['RSI']
+    last_rsi = df.iloc[-1]['rsi']
 
-    if last_rsi < oversold_level and rsi_sma.iloc[0] >= oversold_level:
+    if (last_rsi < oversold_level or last_rsi > oversold_level) and rsi_sma.iloc[-1] >= oversold_level:
         isNeutralFromOversold = True
 
     return isNeutralFromOversold
@@ -59,12 +57,12 @@ def check_if_stock_is_bearish_candle(actual, stock_price_candle_data):
     is_bearish = False
     
     # Converte i dati in un DataFrame di pandas per facilitare l'analisi
-    df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
-    df['3. low'] = pd.to_numeric(df['3. low'])
+    df = pd.DataFrame(stock_price_candle_data).T
+    df['low'] = pd.to_numeric(df['low'])
 
-    previous_price_candle = df.iloc[1]
+    previous_price_candle = df.iloc[-1]
 
-    if(pd.to_numeric(actual) < previous_price_candle['3. low']):
+    if(pd.to_numeric(actual) < previous_price_candle['low']):
         is_bearish = True
     return is_bearish
 
@@ -72,12 +70,12 @@ def check_if_stock_is_bullish_candle(actual, stock_price_candle_data):
     # Check if the actual candle maximum is higher than the previous hour candle maximum
     is_bullish = False
 
-    df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
-    df['2. high'] = pd.to_numeric(df['2. high'])
+    df = pd.DataFrame(stock_price_candle_data).T
+    df['high'] = pd.to_numeric(df['high'])
     
-    previous_price_candle = df.iloc[1]
+    previous_price_candle = df.iloc[-1]
     
-    if(pd.to_numeric(actual) > previous_price_candle['2. high']):
+    if(pd.to_numeric(actual) > previous_price_candle['high']):
         is_bullish = True
     return is_bullish
 
@@ -85,11 +83,11 @@ def check_if_stock_volume_is_higher_than_previous_candle(actual, stock_price_can
     # Check if the actual candle volume is higher than the previous hour candle volume
     is_higher = False
 
-    df = pd.DataFrame(stock_price_candle_data['Time Series (60min)']).T
-    df['5. volume'] = pd.to_numeric(df['5. volume'])
+    df = pd.DataFrame(stock_price_candle_data).T
+    df['volume'] = pd.to_numeric(df['volume'])
 
-    previous_hour_price_candle = df.iloc[0]
+    previous_hour_price_candle = df.iloc[-1]
     
-    if(pd.to_numeric(actual) > previous_hour_price_candle['5. volume']):
+    if(pd.to_numeric(actual) > previous_hour_price_candle['volume']):
         is_higher = True
     return is_higher
