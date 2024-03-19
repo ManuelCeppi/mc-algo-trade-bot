@@ -19,10 +19,10 @@ class MarketDataClient:
         return stocks_data
 
     def get_stock_rsi_data(self, symbol):
-        return self.__financial_modeling_client.get_stock_data('technical_indicator', symbol, '15min', time_period=10, type='rsi')
+        return self.__financial_modeling_client.get_stock_data('technical_indicator', symbol, '15min', None, None, time_period=10, type='rsi')
     
     def get_stock_otc_quote(self, symbol):
-        return self.__financial_modeling_client.get_stock_data('otc/real-time-price', symbol, '1min', None, None)
+        return self.__financial_modeling_client.get_stock_data('otc/real-time-price', symbol, '1min', None, None, None, None)
     
     def get_stock_intraday_data(self, symbol, interval='1hour'):
         return self.__financial_modeling_client.get_stock_data('historical-chart', symbol, interval, datetime.today(), datetime.today(), None, None)
