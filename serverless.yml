@@ -9,9 +9,9 @@ functions:
     handler: handler.algo_trade_start_function
     timeout: 900 # if not set, 6 by default. Max is 900
     events:
-      # Invoke Lambda function every 10 minutes from 15:00 to 20:50 (UTC) on weekdays
+      # Invoke Lambda function every 10 minutes from 14:00 to 19:50 (UTC) on weekdays
       # TODO Think about a different schedule based on legal hour change (maybe two rules?)
-      - schedule: cron(0/10 15-19 ? * MON-FRI *)
+      - schedule: cron(0/10 14-19 ? * MON-FRI *)
     environment:
       ALPACA_API_KEY: ${env:ALPACA_API_KEY}
       ALPACA_SECRET_KEY: ${env:ALPACA_SECRET_KEY}
