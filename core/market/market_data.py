@@ -31,4 +31,4 @@ class MarketDataClient:
         return self.__financial_modeling_client.get_stock_data('historical-chart', symbol, interval, datetime.today().strftime('%Y-%m-%d'), datetime.today().strftime('%Y-%m-%d'), None, None)
 
     def get_stocks_with_higher_volumes(self):
-        return self.__alpaca_screener_client.get_most_actives(MostActivesRequest(top=15)).most_actives
+        return self.__alpaca_screener_client.get_most_actives(MostActivesRequest(top=50)).most_actives
