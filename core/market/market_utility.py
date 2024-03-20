@@ -19,7 +19,7 @@ def check_if_stock_is_neutral_from_overbought(rsi_data):
 
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
-    logger.info(f"neutral_from_overbought - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
+    logger.info(f"neutral_from_overbought - Actual RSI: {actual_rsi} - Last RSI: {last_rsi} - SMA: {rsi_sma.iloc[0]}")
     if (last_rsi > overbought_level and actual_rsi < overbought_level) and rsi_sma.iloc[0] <= overbought_level:
         isNeutralFromOverbought = True
     
@@ -42,7 +42,7 @@ def check_if_stock_is_neutral_from_oversold(rsi_data):
 
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
-    logger.info(f"neutral_from_oversold - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
+    logger.info(f"neutral_from_oversold - Actual RSI: {actual_rsi} - Last RSI: {last_rsi} - SMA: {rsi_sma.iloc[0]}")
     # Check if the RSI is below the oversold level and if the RSI SMA is above the oversold level
     if (last_rsi < oversold_level and actual_rsi > oversold_level) and rsi_sma.iloc[0] >= oversold_level:
         isNeutralFromOversold = True
