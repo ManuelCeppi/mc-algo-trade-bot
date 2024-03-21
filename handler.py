@@ -17,8 +17,6 @@ __data_client = market_data.MarketDataClient()
 __trading_client = trading.TradeClient()
 __user_client = user.User()
 
-# __aws_client = aws_client.AWSClient()
-
 def algo_trade_start_function(event, context):
     logger.info("Algo trade bot - Start function")
     # Get open positions from alpaca user
@@ -138,5 +136,3 @@ def algo_trade_short_strategy_function(stock):
                 __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get('MULTIPLIER')), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
-
-algo_trade_start_function(None, None)
