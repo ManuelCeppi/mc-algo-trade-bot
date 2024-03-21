@@ -13,16 +13,9 @@ import traceback
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-os.environ['MULTIPLIER'] = '1'
-os.environ['FINANCIAL_MODELING_API_KEY'] = 'Nmc4P0zk1HmYCAmneZDYgrmRytglK2D2'
-os.environ['ALPACA_API_KEY'] = 'PKKEM8SXISP5DXV3FYJN'
-os.environ['ALPACA_SECRET_KEY'] = 'dMAoW0QTZUcDA0flvZiRD0KImJax2YC4oXNFHwC2'
-
 __data_client = market_data.MarketDataClient()
 __trading_client = trading.TradeClient()
 __user_client = user.User()
-
-
 
 def algo_trade_start_function(event, context):
     logger.info("Algo trade bot - Start function")
@@ -30,15 +23,15 @@ def algo_trade_start_function(event, context):
     open_positions = __user_client.get_open_positions()
     # Getting current time and checking if this is the last iteration of the day
     current_time = datetime.now(timezone.utc)
-    # if(current_time.hour == 19 and current_time.minute >= 50 and current_time.second > 0):
-    #     logger.info("Algo trade bot - Last iteration of the day")
-    #     if(open_positions):
-    #         logger.info("Algo trade bot - Closing all open positions")
-    #         for position in open_positions:
-    #             __trading_client.close_trade(position)
-    #             logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
-    #             # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
-    #     return
+    if(current_time.hour == 19 and current_time.minute >= 50 and current_time.second > 0):
+        logger.info("Algo trade bot - Last iteration of the day")
+        if(open_positions):
+            logger.info("Algo trade bot - Closing all open positions")
+            for position in open_positions:
+                __trading_client.close_trade(position)
+                logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+                # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+        return
     # Looping positions and check if they are closable (stop loss or take profit)
     if(open_positions):
         logger.info("Algo trade bot - Checking open positions")
@@ -143,5 +136,3 @@ def algo_trade_short_strategy_function(stock):
                 __trading_client.open_trade(stock.symbol, 1 * float(os.environ.get('MULTIPLIER')), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
-
-algo_trade_start_function(None, None)
