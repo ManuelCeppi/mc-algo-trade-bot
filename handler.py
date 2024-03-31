@@ -45,7 +45,6 @@ def algo_trade_start_function(event, context):
     
     # Get stocks with higher volumes
     higher_volumes_stocks = __data_client.get_stocks_with_higher_volumes()
-    logger.info(f"Algo trade bot - Found {higher_volumes_stocks} stocks with higher volumes")
     
     # Looping found stocks
     for stock in higher_volumes_stocks:
