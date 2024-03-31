@@ -34,7 +34,6 @@ def check_if_stock_is_neutral_from_oversold(rsi_data):
 
     # Controlla se l'RSI è sceso al di sotto del livello di ipervenduto (per esempio, 30) e se la SMA dell'RSI è superiore al livello di ipervenduto
     oversold_level = 30
-    logger.info(f"frame: {df}")
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
     logger.info(f"neutral_from_oversold - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
