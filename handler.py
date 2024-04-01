@@ -152,3 +152,6 @@ def algo_trade_short_strategy_function(stock):
                 __trading_client.open_trade(stock.symbol, math.floor(float(1000 / global_quote[0]['lastSalePrice'])), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
+
+if __name__ == '__main__':
+    algo_trade_start_function(None, None)
