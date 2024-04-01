@@ -9,6 +9,7 @@ import core.aws.aws_client as aws_client
 from alpaca.trading.enums import OrderSide
 from datetime import datetime, timezone
 import traceback
+import math
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -105,7 +106,7 @@ def algo_trade_long_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open long position
-                __trading_client.open_trade_notional(stock.symbol, 1000, OrderSide.BUY.value)
+                __trading_client.open_trade(stock.symbol, math.floor(float(1000 / global_quote[0]['lastSalePrice'])), OrderSide.BUY.value)
                 position_has_been_opened = True
     return position_has_been_opened
 
@@ -132,6 +133,6 @@ def algo_trade_short_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position
-                __trading_client.open_trade_notional(stock.symbol, 1000, OrderSide.SELL.value)
+                __trading_client.open_trade(stock.symbol, math.floor(float(1000 / global_quote[0]['lastSalePrice'])), OrderSide.SELL.value)
                 position_has_been_opened = True
     return position_has_been_opened
