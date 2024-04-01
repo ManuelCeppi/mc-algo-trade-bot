@@ -20,7 +20,18 @@ class TradeClient:
         )
 
         self.__trading_client.submit_order(order)
+    
+    def open_trade_notional(self, stock, notional, side, time_in_force='day'):
+        order = MarketOrderRequest(
+            symbol=stock,
+            notional=notional,
+            side=side,
+            type=type,
+            time_in_force=time_in_force
+        )
 
+        self.__trading_client.submit_order(order)
+                                           
     def close_trade(self, position):
         self.__trading_client.close_position(position.symbol)
 
