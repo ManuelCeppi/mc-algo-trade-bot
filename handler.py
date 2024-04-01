@@ -6,6 +6,7 @@ import core.market.market_data as market_data
 import core.user.user as user
 import core.market.market_utility as market_utility
 import core.aws.aws_client as aws_client
+import core.mongo.mongo as mongo
 from alpaca.trading.enums import OrderSide
 from datetime import datetime, timezone
 import traceback
@@ -17,6 +18,7 @@ logger.setLevel(logging.INFO)
 __data_client = market_data.MarketDataClient()
 __trading_client = trading.TradeClient()
 __user_client = user.User()
+__mongo_client = mongo.MongoClient()
 
 def algo_trade_start_function(event, context):
     logger.info("Algo trade bot - Start function")
@@ -31,6 +33,13 @@ def algo_trade_start_function(event, context):
             for position in open_positions:
                 __trading_client.close_trade(position)
                 logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+                profit = 0
+                loss = 0
+                if(position.unrealized_pl > 0):
+                    profit = position.unrealized_pl
+                else:
+                    loss = position.unrealized_pl
+                __mongo_client.insert_one("algo_trade_bot", "trades", {"symbol": position.symbol, "profit": profit, "loss": loss, "operationType": 'close', "timestamp": datetime.now()})
                 # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
         return
     # Looping positions and check if they are closable (stop loss or take profit)
@@ -42,6 +51,13 @@ def algo_trade_start_function(event, context):
                 logger.info(f"Algo trade bot - Closing position {position.symbol}")
                 __trading_client.close_trade(position)
                 logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
+                profit = 0
+                loss = 0
+                if(position.unrealized_pl > 0):
+                    profit = position.unrealized_pl
+                else:
+                    loss = position.unrealized_pl
+                __mongo_client.insert_one("algo_trade_bot", "trades", {"symbol": position.symbol, "profit": profit, "loss": loss, "operationType": 'close', "timestamp": datetime.now()})
                 # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
     
     # Get stocks with higher volumes
