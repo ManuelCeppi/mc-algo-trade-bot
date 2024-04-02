@@ -6,7 +6,6 @@ logger.setLevel(logging.INFO)
 def check_if_stock_is_neutral_from_overbought(rsi_data):
     isNeutralFromOverbought = False
     # Calcola l'RSI utilizzando i dati più recenti
-
     # Converte i dati in un DataFrame di pandas per facilitare l'analisi
     df = pd.DataFrame(rsi_data)
     df['rsi'] = pd.to_numeric(df['rsi'])
@@ -25,12 +24,9 @@ def check_if_stock_is_neutral_from_overbought(rsi_data):
 def check_if_stock_is_neutral_from_oversold(rsi_data):
     isNeutralFromOversold = False
     # Estrai i dati RSI dal risultato
-
-    # Converte i dati in un DataFrame di pandas per facilitare l'analisi
-    
+    # Converte i dati in un DataFrame di pandas per facilitare l'analisi    
     df = pd.DataFrame(rsi_data)
     df['rsi'] = pd.to_numeric(df['rsi']) # Converte la colonna RSI in numerico: l'rsi proveniente da FMP è già SMA 
-
 
     # Controlla se l'RSI è sceso al di sotto del livello di ipervenduto (per esempio, 30) e se la SMA dell'RSI è superiore al livello di ipervenduto
     oversold_level = 30
@@ -53,7 +49,7 @@ def check_stop_loss_and_take_profit(position):
         to_close = True
     return to_close
 
-def check_if_stock_is_bearish_candle(actual, stock_price_candle_data):
+def check_if_stock_is_bearish_candle(stock_price_candle_data):
     # Check if the actual candle minimum is lower than the previous hour candle minimum
     is_bearish = False
     
@@ -62,34 +58,38 @@ def check_if_stock_is_bearish_candle(actual, stock_price_candle_data):
     df['low'] = pd.to_numeric(df['low'])
 
     previous_price_candle = df.iloc[0]
-    logger.info(f"bearish - Previous price candle: {previous_price_candle['low']} - Actual: {actual}")
-    if(pd.to_numeric(actual) < previous_price_candle['low']):
+    actual_price_canlde = df.iloc[1]
+    logger.info(f"bearish - Previous price candle: {previous_price_candle['low']} - Actual: {actual_price_canlde['low']}")
+    if(actual_price_canlde['low'] < previous_price_candle['low']):
         is_bearish = True
     return is_bearish
 
-def check_if_stock_is_bullish_candle(actual, stock_price_candle_data):
+def check_if_stock_is_bullish_candle(stock_price_candle_data):
     # Check if the actual candle maximum is higher than the previous hour candle maximum
     is_bullish = False
 
     df = pd.DataFrame(stock_price_candle_data)
     df['high'] = pd.to_numeric(df['high'])
     
-    previous_price_candle = df.iloc[0]
-    logger.info(f"bullish - Previous price candle: {previous_price_candle['high']} - Actual: {actual}")
-    if(pd.to_numeric(actual) > previous_price_candle['high']):
+    actual_price_candle = df.iloc[0]
+    previous_price_candle = df.iloc[1]
+    logger.info(f"bullish - Previous price candle: {previous_price_candle['high']} - Actual: {actual_price_candle['high']}")
+    
+    if(actual_price_candle['high'] > previous_price_candle['high']):
         is_bullish = True
     return is_bullish
 
-def check_if_stock_volume_is_higher_than_previous_candle(actual, stock_price_candle_data):
+def check_if_stock_volume_is_higher_than_previous_candle(stock_price_candle_data):
     # Check if the actual candle volume is higher than the previous hour candle volume
     is_higher = False
 
     df = pd.DataFrame(stock_price_candle_data)
     df['volume'] = pd.to_numeric(df['volume'])
 
-    previous_hour_price_candle = df.iloc[0]
-    logger.info(f"volumes - Previous price candle: {previous_hour_price_candle['volume']} - Actual: {actual}")
+    actual_price_candle = df.iloc[0]
+    previous_price_candle = df.iloc[1]
+    logger.info(f"volumes - Previous price candle: {previous_price_candle['volume']} - Actual: {actual_price_candle['volume']}")
    
-    if(pd.to_numeric(actual) > previous_hour_price_candle['volume']):
+    if(actual_price_candle['volume'] > previous_price_candle['volume']):
         is_higher = True
     return is_higher
