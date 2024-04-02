@@ -53,10 +53,10 @@ def algo_trade_start_function(event, context):
                 logger.info(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
                 profit = 0
                 loss = 0
-                if(position.unrealized_pl > 0):
-                    profit = position.unrealized_pl
+                if(float(position.unrealized_pl) > 0):
+                    profit = float(position.unrealized_pl)
                 else:
-                    loss = position.unrealized_pl
+                    loss = float(position.unrealized_pl)
                 __mongo_client.insert_one("algo_trade_bot", "trades", {"symbol": position.symbol, "profit": profit, "loss": loss, "operationType": 'close', "timestamp": datetime.now()})
                 # __aws_client.send_message(f"Algo trade bot - Closed position {position.symbol} - Profit / Loss: {position.unrealized_pl}$")
     
