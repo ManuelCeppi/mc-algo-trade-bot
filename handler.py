@@ -123,7 +123,7 @@ def algo_trade_long_strategy_function(stock):
             if(higher_volumes):
                 # Open long position
                 # check funds
-                qty = math.floor(float(os.environ.get['TRADE_AMOUNT'] / global_quote[0]['lastSalePrice']))
+                qty = math.floor(float(os.environ.get('TRADE_AMOUNT') / global_quote[0]['lastSalePrice']))
                 if(qty > 0):
                     trade_account = __trading_client.get_trade_account()
                     has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty
@@ -160,7 +160,7 @@ def algo_trade_short_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position
-                qty = math.floor(float(os.environ.get['TRADE_AMOUNT'] / global_quote[0]['lastSalePrice']))
+                qty = math.floor(float(os.environ.get('TRADE_AMOUNT') / global_quote[0]['lastSalePrice']))
                 if(qty > 0):
                     trade_account = __trading_client.get_trade_account()
                     has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty 
