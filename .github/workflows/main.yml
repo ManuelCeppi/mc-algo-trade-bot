@@ -32,6 +32,7 @@ jobs:
           FINANCIAL_MODELING_API_KEY: ${{ secrets.FINANCIAL_MODELING_API_KEY }}
           MULTIPLIER: ${{ vars.MULTIPLIER }}
           RSI_LIMITS_TOLERANCE: ${{ vars.RSI_LIMITS_TOLERANCE }}
+          TRADE_AMOUNT: ${{ vars.TRADE_AMOUNT }}
           SNS_TOPIC_ARN: ${{ secrets.SNS_TOPIC_ARN }}
           MONGO_HOST: ${{ vars.MONGO_HOST }}
           MONGO_PORT: ${{ vars.MONGO_PORT }}

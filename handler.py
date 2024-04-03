@@ -122,8 +122,19 @@ def algo_trade_long_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open long position
-                __trading_client.open_trade(stock.symbol, math.floor(float(1000 / global_quote[0]['lastSalePrice'])), OrderSide.BUY.value)
-                position_has_been_opened = True
+                # check funds
+                qty = math.floor(float(os.environ.get['TRADE_AMOUNT'] / global_quote[0]['lastSalePrice']))
+                if(qty > 0):
+                    trade_account = __trading_client.get_trade_account()
+                    has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty
+                    if(has_funds):
+                        opened_order = __trading_client.open_trade(stock.symbol, qty, OrderSide.BUY.value)
+                        if(opened_order is not None):
+                            position_has_been_opened = True
+                    else:
+                        logger.info(f"Algo trade bot - Not enough funds to open long position for stock {stock.symbol}")
+                else:
+                    logger.info(f"Algo trade bot - Floor function has returned a quantity less than 1 {stock.symbol}")
     return position_has_been_opened
 
 def algo_trade_short_strategy_function(stock):
@@ -149,8 +160,18 @@ def algo_trade_short_strategy_function(stock):
             logger.info(f"Algo trade bot - Stock {stock.symbol} has higher volumes: {higher_volumes}")
             if(higher_volumes):
                 # Open short position
-                __trading_client.open_trade(stock.symbol, math.floor(float(1000 / global_quote[0]['lastSalePrice'])), OrderSide.SELL.value)
-                position_has_been_opened = True
+                qty = math.floor(float(os.environ.get['TRADE_AMOUNT'] / global_quote[0]['lastSalePrice']))
+                if(qty > 0):
+                    trade_account = __trading_client.get_trade_account()
+                    has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty 
+                    if(has_funds):
+                        opened_order = __trading_client.open_trade(stock.symbol, qty, OrderSide.SELL.value)
+                        if(opened_order is not None):
+                            position_has_been_opened = True
+                    else:
+                        logger.info(f"Algo trade bot - Not enough funds to open short position for stock {stock.symbol}")
+                else:
+                    logger.info(f"Algo trade bot - Floor function has returned a quantity less than 1 {stock.symbol}")
     return position_has_been_opened
 
 if __name__ == '__main__':
