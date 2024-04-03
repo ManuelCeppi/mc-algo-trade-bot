@@ -8,8 +8,6 @@ logger.setLevel(logging.INFO)
 class MongoClient:
     def __init__(self):
         # Mongodb connection
-        # string 
-        logger.info(f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASSWORD')}@{os.environ.get('MONGO_HOST')}/?retryWrites=true&w=majority&appName=algo-trading-bot&authSource=admin")
         self.__mongo_client = pymongo.MongoClient(f"mongodb+srv://{os.environ.get('MONGO_USER')}:{os.environ.get('MONGO_PASSWORD')}@{os.environ.get('MONGO_HOST')}/")
 
     def __get_database(self, database_name):
