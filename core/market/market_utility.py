@@ -14,12 +14,11 @@ def check_if_stock_is_neutral_from_overbought(rsi_data):
     # Controlla se l'RSI è sceso sotto il livello overbought (per esempio, 70) e se la SMA dell'RSI è inferiore a overbought_level
     overbought_level = 70
     tolerance = os.environ.get('RSI_LIMITS_TOLERANCE')
-    overbought_level = overbought_level - float(tolerance)
 
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
     logger.info(f"neutral_from_overbought - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
-    if (last_rsi >= overbought_level and actual_rsi < overbought_level):
+    if (last_rsi >= overbought_level and float(actual_rsi - float(tolerance))  < overbought_level):
         isNeutralFromOverbought = True
     
     return isNeutralFromOverbought
@@ -34,13 +33,12 @@ def check_if_stock_is_neutral_from_oversold(rsi_data):
     # Controlla se l'RSI è sceso al di sotto del livello di ipervenduto (per esempio, 30) e se la SMA dell'RSI è superiore al livello di ipervenduto
     oversold_level = 30
     tolerance = os.environ.get('RSI_LIMITS_TOLERANCE')
-    oversold_level = oversold_level + float(tolerance)
 
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
     logger.info(f"neutral_from_oversold - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
-    # Check if the RSI is below the oversold level and if the RSI SMA is above the oversold level
-    if (last_rsi <= oversold_level and actual_rsi > oversold_level):
+
+    if (last_rsi <= oversold_level and actual_rsi > float(oversold_level + float(tolerance))):
         isNeutralFromOversold = True
 
     return isNeutralFromOversold
