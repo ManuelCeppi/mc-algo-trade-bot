@@ -19,7 +19,7 @@ class TradeClient:
             time_in_force=time_in_force
         )
 
-        self.__trading_client.submit_order(order)
+        return self.__trading_client.submit_order(order)
     
     def open_trade_notional(self, stock, notional, side, time_in_force='day'):
         order = MarketOrderRequest(
@@ -37,5 +37,8 @@ class TradeClient:
 
     def get_asset(self, symbol):
         return self.__trading_client.get_asset(symbol)
+    
+    def get_trade_account(self):
+        return self.__trading_client.get_account()
 
 
