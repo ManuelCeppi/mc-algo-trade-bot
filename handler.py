@@ -126,7 +126,7 @@ def algo_trade_long_strategy_function(stock):
                 qty = math.floor(float(os.environ.get('TRADE_AMOUNT')) / float(global_quote[0]['lastSalePrice']))
                 if(qty > 0):
                     trade_account = __trading_client.get_trade_account()
-                    has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty
+                    has_funds = float(trade_account.cash) >= float(global_quote[0]['lastSalePrice']) * qty
                     if(has_funds):
                         opened_order = __trading_client.open_trade(stock.symbol, qty, OrderSide.BUY.value)
                         if(opened_order is not None):
@@ -163,7 +163,7 @@ def algo_trade_short_strategy_function(stock):
                 qty = math.floor(float(os.environ.get('TRADE_AMOUNT')) / float(global_quote[0]['lastSalePrice']))
                 if(qty > 0):
                     trade_account = __trading_client.get_trade_account()
-                    has_funds = trade_account.cash >= float(global_quote[0]['lastSalePrice']) * qty 
+                    has_funds = float(trade_account.cash) >= float(global_quote[0]['lastSalePrice']) * qty 
                     if(has_funds):
                         opened_order = __trading_client.open_trade(stock.symbol, qty, OrderSide.SELL.value)
                         if(opened_order is not None):
