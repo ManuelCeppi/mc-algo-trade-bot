@@ -18,7 +18,7 @@ def check_if_stock_is_neutral_from_overbought(rsi_data):
     actual_rsi = df.iloc[0]['rsi']
     last_rsi = df.iloc[1]['rsi']
     logger.info(f"neutral_from_overbought - Actual RSI: {actual_rsi} - Last RSI: {last_rsi}")
-    if (last_rsi >= overbought_level and float(actual_rsi - float(tolerance))  < overbought_level):
+    if (last_rsi >= overbought_level and float(actual_rsi + float(tolerance))  < overbought_level):
         isNeutralFromOverbought = True
     
     return isNeutralFromOverbought
