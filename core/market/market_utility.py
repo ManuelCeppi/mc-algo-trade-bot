@@ -59,8 +59,10 @@ def check_if_stock_is_bearish_candle(stock_price_candle_data):
     
     # Converte i dati in un DataFrame di pandas per facilitare l'analisi
     df = pd.DataFrame(stock_price_candle_data)
+    # Check if there are atleast 2 candles 
+    if(len(df) < 2):
+        return is_bearish
     df['low'] = pd.to_numeric(df['low'])
-
     previous_price_candle = df.iloc[0]
     actual_price_canlde = df.iloc[1]
     logger.info(f"bearish - Previous price candle: {previous_price_candle['low']} - Actual: {actual_price_canlde['low']}")
@@ -73,6 +75,8 @@ def check_if_stock_is_bullish_candle(stock_price_candle_data):
     is_bullish = False
 
     df = pd.DataFrame(stock_price_candle_data)
+    if(len(df) < 2):
+        return is_bullish
     df['high'] = pd.to_numeric(df['high'])
     
     actual_price_candle = df.iloc[0]
